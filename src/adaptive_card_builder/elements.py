@@ -374,3 +374,28 @@ def qlik_chart(
     element = {"type": "Qlik.Chart", "chart": chart, "defaultChartType":chart['chartType'],"alternativeChartTypes":alternativeChartTypes}
     element.update(kwargs)
     return element 
+
+def qlik_skeleton(
+    variant: str,
+    width: str | None = None,
+    height: str | None = None,
+) -> Dict[str, Any]:
+    """
+    Create an Qlik.Skeleton element.
+    
+    Args:
+        variant: Type of skeleton "text" | "circle" | "rectangle" | "Button" | "IconButton" | "Input" | "InputField"
+        alternativeChartTypes: Card to show
+        **kwargs: Additional properties
+        
+    Returns:
+        Qlik.Skeleton element dictionary
+    """
+    element = {"type": "Qlik.Skeleton", "variant":variant,"isSkeleton":True}
+
+    if(width):
+        element["width"] = width
+    if(height):
+        element["height"] = height
+    
+    return element 
