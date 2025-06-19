@@ -69,9 +69,14 @@ async def example_individual_components():
     print("\n1. buttons part:")
     # chart = aaa.create_chart({"chartType": "barchart"}, [{}, {}])
     # skeleton = aaa.create_skeleton()
-    buttons = aaa.create_buttons(card=[], sheetData=[{"title":"sheet1","sheetId":"1","iconUrl":"AddOutline"},{"title":"sheet2","sheetId":"2","iconUrl":"AddOutline"}])
-    print(buttons)
-
+    # buttons = aaa.create_buttons(
+    #     card=[],
+    #     sheetData=[
+    #         {"title": "sheet1", "sheetId": "1", "iconUrl": "AddOutline"},
+    #         {"title": "sheet2", "sheetId": "2", "iconUrl": "AddOutline"},
+    #     ],
+    # )
+    # print(buttons)
 
 
 async def main():

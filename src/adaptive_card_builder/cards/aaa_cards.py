@@ -28,7 +28,7 @@ from ..elements import (
     qlik_chart,
     qlik_skeleton,
     qlik_tag,
-    action_show_card
+    action_show_card,
 )
 import json
 
@@ -170,7 +170,13 @@ class AAACards:
             )
         return actions
 
-    def create_buttons(self, card: Dict[str, Any], sheetData: List[Dict[str, str]]):
+    def create_buttons(
+        self,
+        add_to_sheet,
+        sheet_list_actions,
+        is_narrative_set: bool,
+        card: Dict[str, Any],
+    ):
         """
         Create buttons sections for App Analysis Agent card.
         having 2 buttons in one row and one button below that row
@@ -273,7 +279,7 @@ class AAACards:
                         {
                             "type": "Action.MenuDropdown",
                             "title": "Add this chart to sheet...",
-                            "actions": self.menuList(sheetData),
+                            "actions": sheet_list_actions,
                             "data_size": "small",
                             "fullWidth": True,
                             "style": "quiet",
@@ -289,12 +295,14 @@ class AAACards:
 
         buttonsRow1 = column_set(
             columns=[button_column_set1, button_column_set2, button_column_set3],
-            **{"separator":True}
+            **{"separator": True},
         )
-        buttonsRow2 = column_set(columns=[button_row2_column1],
-        **{"separator":True}
-        )
+        buttonsRow2 = column_set(columns=[button_row2_column1], **{"separator": True})
 
-        actionSet = container(items=[buttonsRow1, buttonsRow2], separator=True)
+        actionSet = (
+            container(items=[buttonsRow1, buttonsRow2], separator=True)
+            if add_to_sheet
+            else container(items=[buttonsRow1, buttonsRow2], separator=True)
+        )
         print(to_dict(actionSet))
         return to_dict(actionSet)
