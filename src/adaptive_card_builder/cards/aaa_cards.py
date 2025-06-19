@@ -4,6 +4,7 @@ Provides methods for creating various components of AAA cards using msteamsadapt
 """
 
 from typing import List, Dict, Any, Optional
+from adaptive_card_builder.utils import to_dict
 from msteamsadaptivecardbuilder import (
     AdaptiveCard,
     TextBlock,
@@ -29,21 +30,6 @@ from ..elements import (
     qlik_tag,
 )
 import json
-
-
-def to_dict(card_obj):
-    return json.loads(
-        json.dumps(
-            card_obj,
-            default=(
-                lambda o: (
-                    o.__dict__
-                    if hasattr(o, "type") and o.type != "AdaptiveCard"
-                    else {}
-                )
-            ),
-        )
-    )
 
 
 class AAACards:

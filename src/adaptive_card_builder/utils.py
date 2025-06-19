@@ -30,3 +30,18 @@ def prettify_json(card, indent: int = 2) -> str:
         Dictionary with body_count and actions_count
     """
     return {"body_count": len(card.body), "actions_count": len(card.actions)}
+
+
+def to_dict(card_obj):
+    return json.loads(
+        json.dumps(
+            card_obj,
+            default=(
+                lambda o: (
+                    o.__dict__
+                    if hasattr(o, "type") and o.type != "AdaptiveCard"
+                    else {}
+                )
+            ),
+        )
+    )
