@@ -399,3 +399,53 @@ def qlik_skeleton(
         element["height"] = height
     
     return element 
+
+def qlik_tag(
+    text: str,
+    size: str,
+    color: str,
+) -> Dict[str, Any]:
+    """
+    Create an Qlik.Tag element.
+    
+    Args:
+        variant: Type of skeleton "text" | "circle" | "rectangle" | "Button" | "IconButton" | "Input" | "InputField"
+        alternativeChartTypes: Card to show
+        **kwargs: Additional properties
+        
+    Returns:
+        Qlik.Tag element dictionary
+    """
+    element = {"type": "Qlik.Tag", "text":text,"size":size,"color":color}
+
+    
+    return element 
+
+def action_show_modal(
+    iconUrl: str,
+    title: str | None = None,
+    style: str = 'default',
+    size: str = 'small',
+    **kwargs
+) -> Dict[str, Any]:
+    """
+    Create an Action.ShowModal element.
+    
+    Args:
+        iconUrl: Icon URL
+        title: Action title
+        style: Action style
+        size: Action size
+        **kwargs: Additional properties
+        
+    Returns:
+        Action.ShowModal element dictionary
+    """
+    element = {"type": "Action.ShowModal","style":style,"size":size}
+    if(iconUrl):
+        element["iconUrl"] = iconUrl
+    if(title):
+        element["title"] = title
+
+    element.update(kwargs)
+    return element 

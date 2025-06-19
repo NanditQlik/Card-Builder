@@ -8,7 +8,7 @@ from msteamsadaptivecardbuilder import (
     AdaptiveCard, TextBlock, Image, Container, ColumnSet, Column, ActionSet,
     ActionSubmit, ActionOpenUrl, ActionShowCard
 )
-from ..elements import text_block, container, column_set, column, image, action_set, qlik_chart, qlik_skeleton
+from ..elements import action_show_modal, text_block, container, column_set, column, image, action_set, qlik_chart, qlik_skeleton, qlik_tag
 import json
 
 
@@ -51,57 +51,60 @@ class AAACards:
         ]
     
 
-    def create_top_bar(
-        self,
-        app_name: str,
-        status: str = "active",
-        timestamp: Optional[str] = None,
-        **kwargs
-    ) -> Container:
+    def create_top_bar(self,
+    analysisType:str,
+    title: str | bool = False 
+    ) -> Dict[str, Any]:
         """
         Create the top bar component for App Analysis Agent card.
         
         Args:
-            app_name: Name of the application being analyzed
-            status: Status of the analysis (active, completed, error, warning)
-            timestamp: Timestamp of the analysis
-            **kwargs: Additional properties
-            
-        Returns:
-            Container with top bar elements
+            analysisType: Type of analysis (e.g., "performance", "usage", "errors")
+            title: Title of the analysis (optional)
         """
-        status_color = self.status_colors.get(status.lower(), "Default")
-        
-        # Status indicator
-        status_text = text_block(
-            f"● {status.upper()}",
-            color=status_color,
-            size="Small",
-            weight="Bolder"
+
+        column_set1 = column_set(
+            columns=[
+                column(
+                    items=[
+                        qlik_tag(text=analysisType, size="s", color="info")
+                    ],
+                    **{"spacing": "small","verticalContentAlignment": "top"}
+                ),
+                column(
+                    items=[], width="stretch"
+                ),
+                column(
+                    items=[
+                        
+                        action_set(actions=[action_show_modal(iconUrl="Maximize")],**{"color": "info","addPaddingLeft":True})
+                        ],                     **{"verticalContentAlignment": "top"}
+
+                ),
+            ]
         )
-        
-        # App name
-        app_title = text_block(
-            app_name,
-            size="Large",
-            weight="Bolder"
+
+        column_set2 = column_set(
+            columns=[
+                column(
+                    items=[
+                        qlik_skeleton(variant='rectangle', height='24px'),
+                        qlik_skeleton(variant='rectangle', height='24px'),
+                    ] if type(title) is bool else [text_block(title, size="large", weight="bolder",**{"isSubtle":False,"wrap":True,"content":True})],
+                    **{"verticalContentAlignment": "top","spacing":"small"}
+                ),
+            ],
+            **{"spacing": "small"}
         )
-        
-        # Timestamp (if provided)
-        elements = [status_text, app_title]
-        if timestamp:
-            time_text = text_block(
-                timestamp,
-                size="Small",
-                is_subtle=True
-            )
-            elements.append(time_text)
-        
-        return container(
-            items=elements,
-            style="Emphasis",
-            **kwargs
+
+        finalElement = container(
+            items=[column_set1,column_set2],
         )
+
+        print(to_dict(finalElement))
+
+        return to_dict(finalElement)
+
     
     def create_title(
         self,

@@ -30,8 +30,9 @@ async def example_individual_components():
     print("\n1. Top Bar Component:")
     chart = aaa.create_chart({"chartType":'barchart'}, [{},{}])
     skeleton = aaa.create_skeleton()
-    print(chart)
-    print(skeleton)
+    toppbar = aaa.create_top_bar("Calculated measure (KPI)",'Total Sales')
+    # print(chart)
+    # print(skeleton)
 
     # top_bar_dict = await top_bar.to_dict()
     # print(prettify_json(top_bar_dict))
