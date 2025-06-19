@@ -27,10 +27,10 @@ async def example_individual_components():
     icon_url = "https://example.com/app-icon.png"
 
     # Create individual components
-    print("\n1. Top Bar Component:")
-    chart = aaa.create_chart({"chartType": "barchart"}, [{}, {}])
-    skeleton = aaa.create_skeleton()
-    toppbar = aaa.create_top_bar("Calculated measure (KPI)", "Total Sales")
+    # print("\n1. Top Bar Component:")
+    # chart = aaa.create_chart({"chartType": "barchart"}, [{}, {}])
+    # skeleton = aaa.create_skeleton()
+    # toppbar = aaa.create_top_bar("Calculated measure (KPI)", "Total Sales")
     # print(chart)
     # print(skeleton)
 
@@ -65,6 +65,13 @@ async def example_individual_components():
     #     top_bar = aaa.create_top_bar("TestApp", status, "2023-12-25 10:30:00")
     #     top_bar_dict = await top_bar.to_dict()
     #     print(prettify_json(top_bar_dict))
+
+    print("\n1. buttons part:")
+    # chart = aaa.create_chart({"chartType": "barchart"}, [{}, {}])
+    # skeleton = aaa.create_skeleton()
+    buttons = aaa.create_buttons(card=[], sheetData=[{"title":"sheet1","sheetId":"1","iconUrl":"AddOutline"},{"title":"sheet2","sheetId":"2","iconUrl":"AddOutline"}])
+    print(buttons)
+
 
 
 async def main():

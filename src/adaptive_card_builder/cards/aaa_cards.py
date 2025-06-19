@@ -28,6 +28,7 @@ from ..elements import (
     qlik_chart,
     qlik_skeleton,
     qlik_tag,
+    action_show_card
 )
 import json
 
@@ -149,3 +150,149 @@ class AAACards:
             Qlik.Chart element dictionary
         """
         return qlik_chart(chart, alternative_chart_types, **kwargs)
+
+    def menuList(self, sheetData: List[Dict[str, str]]) -> List[Dict[str, Any]]:
+        """
+        Generate a list of Action.Execute dicts for the menu dropdown based on sheetData.
+        """
+        actions = []
+        for sheet in sheetData:
+            actions.append(
+                {
+                    "type": "Action.Execute",
+                    "title": sheet["title"],
+                    "sheetId": sheet["sheetId"],
+                    "iconUrl": sheet["iconUrl"],
+                    "style": "quiet",
+                    "fullWidth": True,
+                    "size": "small",
+                    "verb": "addToNewSheet",
+                }
+            )
+        return actions
+
+    def create_buttons(self, card: Dict[str, Any], sheetData: List[Dict[str, str]]):
+        """
+        Create buttons sections for App Analysis Agent card.
+        having 2 buttons in one row and one button below that row
+        """
+        button_column_set1 = column(
+            items=[
+                action_set(
+                    actions=[
+                        action_show_card(
+                            title="Assumptions1",
+                            card=card,
+                            **{
+                                "activeIconUrl": "ViewDisabledOutline",
+                                "activeTitle": "Assumptions1",
+                                "fullWidth": True,
+                                "isEnabled": True,
+                                "layout": {
+                                    "width": "100%",
+                                    "margin": "8px 0 16px",
+                                    "boxShadow": "none",
+                                    "boxSizing": "border-box",
+                                    "border": "none",
+                                    "backgroundColor": "transparent",
+                                },
+                                "size": "small",
+                                "style": "quiet",
+                                "type": "Action.ShowCard",
+                            },
+                        )
+                    ]
+                )
+            ],
+            verticalContentAlignment="center",
+            width="stretch",
+        )
+
+        button_column_set2 = column(
+            items=[
+                action_set(
+                    actions=[
+                        {
+                            "type": "Action.ToggleVisibility",
+                            "title": "Elaborate1",
+                            "targetElements": [
+                                "moreText",
+                                "elaborate",
+                                "HideElaboration",
+                            ],
+                            "actionId": "elaborate",
+                            "fullWidth": True,
+                            "iconUrl": "AnswerOutline",
+                            "isEnabled": True,
+                            "size": "small",
+                            "style": "quiet",
+                            "verb": "elaborate",
+                        }
+                    ]
+                )
+            ],
+            id="elaborate",
+            isVisible=True,
+            verticalContentAlignment="center",
+            width="stretch",
+        )
+
+        button_column_set3 = column(
+            items=[
+                action_set(
+                    actions=[
+                        {
+                            "type": "Action.ToggleVisibility",
+                            "title": "Hide Elaborate1",
+                            "targetElements": [
+                                "moreText",
+                                "elaborate",
+                                "HideElaboration",
+                            ],
+                            "actionId": "elaborate",
+                            "fullWidth": True,
+                            "iconUrl": "ViewDisabled",
+                            "isEnabled": True,
+                            "size": "small",
+                            "style": "quiet",
+                            "verb": "elaborate",
+                        }
+                    ]
+                )
+            ],
+            id="HideElaboration",
+            isVisible=False,
+            verticalContentAlignment="center",
+            width="stretch",
+        )
+
+        button_row2_column1 = column(
+            items=[
+                action_set(
+                    actions=[
+                        {
+                            "type": "Action.MenuDropdown",
+                            "title": "Add this chart to sheet...",
+                            "actions": self.menuList(sheetData),
+                            "data_size": "small",
+                            "fullWidth": True,
+                            "style": "quiet",
+                            "size": "small",
+                            "iconUrl": "AddOutline",
+                            "verb": "addToNewSheet",
+                        }
+                    ]
+                )
+            ],
+            verticalContentAlignment="center",
+            width="stretch",
+        )
+
+        buttonsRow1 = column_set(
+            columns=[button_column_set1, button_column_set2, button_column_set3]
+        )
+        buttonsRow2 = column_set(columns=[button_row2_column1])
+
+        actionSet = container(items=[buttonsRow1, buttonsRow2], separator=True)
+        print(to_dict(actionSet))
+        return to_dict(actionSet)

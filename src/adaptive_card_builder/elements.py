@@ -427,3 +427,42 @@ def action_show_modal(
 
     element.update(kwargs)
     return element
+
+
+def action_toggle_visibility(
+    title: str, targetElements: List[str], **kwargs
+) -> Dict[str, Any]:
+    """
+    Create an Action.ToggleVisibility element.
+
+    Args:
+        title: Action title
+        targetElements: List of target elements
+        **kwargs: Additional properties
+    """
+    element = {
+        "type": "Action.ToggleVisibility",
+        "title": title,
+        "targetElements": targetElements,
+    }
+    element.update(kwargs)
+    return element
+
+
+def action_menu_dropdown(title: str, **kwargs) -> Dict[str, Any]:
+    element = {"type": "Action.MenuDropdown", "title": title}
+    element.update(kwargs)
+    return element
+
+
+def action_execute(
+    title: str, sheetID: str, sheetIcon: str, **kwargs
+) -> Dict[str, Any]:
+    element = {
+        type: "Action.Execute",
+        title: title,
+        sheetId: sheetId,
+        sheetIcon: sheetIcon,
+    }
+    element.update(kwargs)
+    return element
