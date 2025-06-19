@@ -137,4 +137,9 @@ dmypy.json
 
 # OS
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# Formatting tools
+.black
+.isort.cfg
+pyproject.toml 
