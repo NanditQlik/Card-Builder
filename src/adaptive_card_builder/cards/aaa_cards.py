@@ -165,7 +165,6 @@ class AAACards:
                     "iconUrl": sheet["iconUrl"],
                     "style": "quiet",
                     "fullWidth": True,
-                    "size": "small",
                     "verb": "addToNewSheet",
                 }
             )
@@ -181,11 +180,12 @@ class AAACards:
                 action_set(
                     actions=[
                         action_show_card(
-                            title="Assumptions1",
+                            title="Assumptions",
                             card=card,
                             **{
                                 "activeIconUrl": "ViewDisabledOutline",
-                                "activeTitle": "Assumptions1",
+                                "activeTitle": "Assumptions",
+                                "iconUrl": "ViewOutline",
                                 "fullWidth": True,
                                 "isEnabled": True,
                                 "layout": {
@@ -214,7 +214,7 @@ class AAACards:
                     actions=[
                         {
                             "type": "Action.ToggleVisibility",
-                            "title": "Elaborate1",
+                            "title": "Elaborate",
                             "targetElements": [
                                 "moreText",
                                 "elaborate",
@@ -222,7 +222,7 @@ class AAACards:
                             ],
                             "actionId": "elaborate",
                             "fullWidth": True,
-                            "iconUrl": "AnswerOutline",
+                            "iconUrl": "AnswersOutline",
                             "isEnabled": True,
                             "size": "small",
                             "style": "quiet",
@@ -243,7 +243,7 @@ class AAACards:
                     actions=[
                         {
                             "type": "Action.ToggleVisibility",
-                            "title": "Hide Elaborate1",
+                            "title": "Hide elaboration",
                             "targetElements": [
                                 "moreText",
                                 "elaborate",
@@ -279,7 +279,6 @@ class AAACards:
                             "style": "quiet",
                             "size": "small",
                             "iconUrl": "AddOutline",
-                            "verb": "addToNewSheet",
                         }
                     ]
                 )
@@ -289,9 +288,12 @@ class AAACards:
         )
 
         buttonsRow1 = column_set(
-            columns=[button_column_set1, button_column_set2, button_column_set3]
+            columns=[button_column_set1, button_column_set2, button_column_set3],
+            **{"separator":True}
         )
-        buttonsRow2 = column_set(columns=[button_row2_column1])
+        buttonsRow2 = column_set(columns=[button_row2_column1],
+        **{"separator":True}
+        )
 
         actionSet = container(items=[buttonsRow1, buttonsRow2], separator=True)
         print(to_dict(actionSet))
