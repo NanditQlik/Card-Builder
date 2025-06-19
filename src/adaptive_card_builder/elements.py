@@ -459,10 +459,10 @@ def action_execute(
     title: str, sheetID: str, sheetIcon: str, **kwargs
 ) -> Dict[str, Any]:
     element = {
-        type: "Action.Execute",
-        title: title,
-        sheetId: sheetId,
-        sheetIcon: sheetIcon,
+        "type": "Action.Execute",
+        "title": title,
+        "sheetID": sheetID,
+        "sheetIcon": sheetIcon,
     }
     element.update(kwargs)
     return element
