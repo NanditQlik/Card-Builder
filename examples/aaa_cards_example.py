@@ -66,7 +66,7 @@ async def example_individual_components():
     #     top_bar_dict = await top_bar.to_dict()
     #     print(prettify_json(top_bar_dict))
 
-    print("\n1. buttons part:")
+    # print("\n1. buttons part:")
     # chart = aaa.create_chart({"chartType": "barchart"}, [{}, {}])
     # skeleton = aaa.create_skeleton()
     # buttons = aaa.create_buttons(
