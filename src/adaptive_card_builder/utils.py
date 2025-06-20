@@ -1,7 +1,3 @@
-"""
-Utility functions for Adaptive Card operations using the official adaptivecards library.
-"""
-
 from typing import List, Optional
 import json
 
