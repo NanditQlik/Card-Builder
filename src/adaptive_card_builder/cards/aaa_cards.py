@@ -28,6 +28,7 @@ from ..elements import (
     qlik_chart,
     qlik_skeleton,
     qlik_tag,
+    action_show_card,
 )
 import json
 
@@ -149,3 +150,159 @@ class AAACards:
             Qlik.Chart element dictionary
         """
         return qlik_chart(chart, alternative_chart_types, **kwargs)
+
+    def menuList(self, sheetData: List[Dict[str, str]]) -> List[Dict[str, Any]]:
+        """
+        Generate a list of Action.Execute dicts for the menu dropdown based on sheetData.
+        """
+        actions = []
+        for sheet in sheetData:
+            actions.append(
+                {
+                    "type": "Action.Execute",
+                    "title": sheet["title"],
+                    "sheetId": sheet["sheetId"],
+                    "iconUrl": sheet["iconUrl"],
+                    "style": "quiet",
+                    "fullWidth": True,
+                    "verb": "addToNewSheet",
+                }
+            )
+        return actions
+
+    def create_buttons(
+        self,
+        add_to_sheet,
+        sheet_list_actions,
+        is_narrative_set: bool,
+        card: Dict[str, Any],
+    ):
+        """
+        Create buttons sections for App Analysis Agent card.
+        having 2 buttons in one row and one button below that row
+        """
+        button_column_set1 = column(
+            items=[
+                action_set(
+                    actions=[
+                        action_show_card(
+                            title="Assumptions",
+                            card=card,
+                            **{
+                                "activeIconUrl": "ViewDisabledOutline",
+                                "activeTitle": "Assumptions",
+                                "iconUrl": "ViewOutline",
+                                "fullWidth": True,
+                                "isEnabled": True,
+                                "layout": {
+                                    "width": "100%",
+                                    "margin": "8px 0 16px",
+                                    "boxShadow": "none",
+                                    "boxSizing": "border-box",
+                                    "border": "none",
+                                    "backgroundColor": "transparent",
+                                },
+                                "size": "small",
+                                "style": "quiet",
+                                "type": "Action.ShowCard",
+                            },
+                        )
+                    ]
+                )
+            ],
+            verticalContentAlignment="center",
+            width="stretch",
+        )
+
+        button_column_set2 = column(
+            items=[
+                action_set(
+                    actions=[
+                        {
+                            "type": "Action.ToggleVisibility",
+                            "title": "Elaborate",
+                            "targetElements": [
+                                "moreText",
+                                "elaborate",
+                                "HideElaboration",
+                            ],
+                            "actionId": "elaborate",
+                            "fullWidth": True,
+                            "iconUrl": "AnswersOutline",
+                            "isEnabled": True,
+                            "size": "small",
+                            "style": "quiet",
+                            "verb": "elaborate",
+                        }
+                    ]
+                )
+            ],
+            id="elaborate",
+            isVisible=True,
+            verticalContentAlignment="center",
+            width="stretch",
+        )
+
+        button_column_set3 = column(
+            items=[
+                action_set(
+                    actions=[
+                        {
+                            "type": "Action.ToggleVisibility",
+                            "title": "Hide elaboration",
+                            "targetElements": [
+                                "moreText",
+                                "elaborate",
+                                "HideElaboration",
+                            ],
+                            "actionId": "elaborate",
+                            "fullWidth": True,
+                            "iconUrl": "ViewDisabled",
+                            "isEnabled": True,
+                            "size": "small",
+                            "style": "quiet",
+                            "verb": "elaborate",
+                        }
+                    ]
+                )
+            ],
+            id="HideElaboration",
+            isVisible=False,
+            verticalContentAlignment="center",
+            width="stretch",
+        )
+
+        button_row2_column1 = column(
+            items=[
+                action_set(
+                    actions=[
+                        {
+                            "type": "Action.MenuDropdown",
+                            "title": "Add this chart to sheet...",
+                            "actions": sheet_list_actions,
+                            "data_size": "small",
+                            "fullWidth": True,
+                            "style": "quiet",
+                            "size": "small",
+                            "iconUrl": "AddOutline",
+                        }
+                    ]
+                )
+            ],
+            verticalContentAlignment="center",
+            width="stretch",
+        )
+
+        buttonsRow1 = column_set(
+            columns=[button_column_set1, button_column_set2, button_column_set3],
+            **{"separator": True},
+        )
+        buttonsRow2 = column_set(columns=[button_row2_column1], **{"separator": True})
+
+        actionSet = (
+            container(items=[buttonsRow1, buttonsRow2], separator=True)
+            if add_to_sheet
+            else container(items=[buttonsRow1, buttonsRow2], separator=True)
+        )
+        print(to_dict(actionSet))
+        return to_dict(actionSet)
